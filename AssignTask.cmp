@@ -1,0 +1,164 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" description="ShowTaskCustom"
+    access="global" controller="AssignTaskController">
+    <aura:attribute name="assigntaskDetails" type="List" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="searchResult" type="List" description="use for store and display account list return from server"/>
+    <aura:attribute name="searchKeyword" type="String" description="use for store user search input"/>
+    <aura:attribute name="Message" type="boolean" default="false" description="use for display no record found message"/>
+    <aura:attribute name="TotalNumberOfRecord" type="integer" default="0" description="use for display Number of records"/>
+    <div style="background-color: white;">
+        <div class="slds-text-heading_medium" style="text-align: center; margin: 0 auto; font-weight: 600;">Assign Task
+        </div>
+        <!-- Search -->
+        <!-- <div class="slds-form-element" style="padding: 15px 32px;">
+            <div class="slds-form-element__control">
+                <input type="text" id="form-element-01" placeholder="Search User Name, Phone, Email..."
+                    class="slds-input" />
+            </div>
+        </div> -->
+        <!--End Search-->
+
+        <!--Search Test-->
+        <lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />
+        <div class="slds-m-around_medium">
+            <!-- SEARCH INPUT AND SEARCH BUTTON--> 
+            <lightning:layout>
+                <lightning:layoutItem size="3" padding="around-small">
+                    <lightning:input value="{!v.searchKeyword}"
+                                     required="true"
+                                     placeholder="search User.."
+                                     aura:id="searchField"
+                                     label="Name"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2" padding="around-small">
+                    <lightning:button onclick="{!c.Search}"
+                                      variant="brand"
+                                      label="Search"
+                                      iconName="utility:search"/> 
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+             <!-- TOTAL RECORDS BADGES--> 
+             <!-- <div class="slds-m-around_x-small">
+                 <lightning:badge label="{!v.TotalNumberOfRecord}" />
+             </div> -->
+             
+             <!-- ERROR MESSAGE IF NOT RECORDS FOUND--> 
+             <aura:if isTrue="{!v.Message}">
+                 <div class="slds-notify_container slds-is-relative">
+                     <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                         <div class="slds-notify__content">
+                             <h2 class="slds-text-heading_small">No Records Found...</h2>
+                         </div>
+                     </div>
+                 </div>
+             </aura:if>
+
+        <!-- TABLE CONTENT--> 
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Function">Function</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="UserName">User Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Role">Role</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Profile">Profile</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!--### display all records of searchResult attribute by aura:iteration ###-->
+                <aura:iteration items="{!v.searchResult}" var="us" indexVar="count">
+                    <tr>
+                        <td data-label="Function">
+                            <div class="slds-truncate" title=""><input type="checkbox" name="chekb" id="myCheck"
+                                    onclick="myFunction()"></input></div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!us.Name}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!us.Username}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!us.UserRole.Name}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!us.Profile.Name}</div>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+        <!--End Search Test-->
+
+        <!--Assign Task table-->
+        <div class="slds-scrollable" style="height: 150px;">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                aria-label="Example default base table of Opportunities">
+                <!-- <div class="slds-text-longform"> -->
+                <thead>
+                    <tr class="slds-line-height_reset" style="background-color: green  !important;">
+                        <th>
+                            <div class="" title="Function">Function</div>
+                        </th>
+                        <th>
+                            <div class="" title="Name">Name</div>
+                        </th>
+                        <th>
+                            <div class="" title="UserName">UserName</div>
+                        </th>
+                        <th>
+                            <div class="" title="Role">Role</div>
+                        </th>
+                        <th>
+                            <div class="" title="Profile">Profile</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.assigntaskDetails}" var="item">
+                        <tr>
+                            <td data-label="Function">
+                                <div class="slds-truncate" title=""><input type="checkbox" name="chekb" id="myCheck"
+                                        onclick="myFunction()"></input></div>
+                            </td>
+                            <td data-label="Name">
+                                <div class="slds-truncate" title="">{!item.Name}</div>
+                            </td>
+                            <td data-label="UserName">
+                                <div class="slds-truncate" title="">{!item.Username}</div>
+                            </td>
+                            <td data-label="Role">
+                                <div class="slds-truncate" title="">{!item.UserRole.Name}</div>
+                            </td>
+                            <td data-label="Profile">
+                                <div class="slds-truncate" title="">{!item.Profile.Name}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+                <!-- </div> -->
+            </table>
+        </div>
+        <!--End Assign Task table-->
+        <!-- Button -->
+        <div class="slds-clearfix" style="padding: 15px;">
+            <div class="slds-float_right" style="background-color: white;">
+                <button class="slds-button slds-button_success">Save</button>
+                <button class="slds-button slds-button_neutral">Cancel</button>
+            </div>
+        </div>
+        <!-- End Button -->
+    </div>
+</aura:component>
